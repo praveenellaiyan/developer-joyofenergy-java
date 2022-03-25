@@ -34,6 +34,7 @@ public class MeterReadingController {
         return ResponseEntity.ok().build();
     }
 
+    //TODO: Could be moved to MeterReading Entity
     private boolean isMeterReadingsValid(MeterReadings meterReadings) {
         String smartMeterId = meterReadings.getSmartMeterId();
         List<ElectricityReading> electricityReadings = meterReadings.getElectricityReadings();

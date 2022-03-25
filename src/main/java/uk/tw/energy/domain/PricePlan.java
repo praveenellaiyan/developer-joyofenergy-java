@@ -9,6 +9,7 @@ public class PricePlan {
 
     private final String energySupplier;
     private final String planName;
+    //TODO: New value object Price could be created to handle base price and multiplier
     private final BigDecimal unitRate; // unit price per kWh
     private final List<PeakTimeMultiplier> peakTimeMultipliers;
 

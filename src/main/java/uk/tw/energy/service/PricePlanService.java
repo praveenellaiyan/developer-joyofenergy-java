@@ -31,6 +31,7 @@ public class PricePlanService {
             return Optional.empty();
         }
 
+        //TODO: Refactor into a separate service
         return Optional.of(pricePlans.stream().collect(
                 Collectors.toMap(PricePlan::getPlanName, t -> calculateCost(electricityReadings.get(), t))));
     }

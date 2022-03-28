@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import uk.tw.energy.builders.MeterReadingsBuilder;
 import uk.tw.energy.domain.MeterReadings;
+import uk.tw.energy.domain.SmartMeter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,31 +37,31 @@ public class EndpointTest {
 
     @Test
     public void givenMeterIdShouldReturnAMeterReadingAssociatedWithMeterId() throws JsonProcessingException {
-        String smartMeterId = "bob";
-        populateMeterReadingsForMeter(smartMeterId);
+        SmartMeter smartMeter = new SmartMeter("bob");
+        populateMeterReadingsForMeter(smartMeter);
 
-        ResponseEntity<String> response = restTemplate.getForEntity("/readings/read/" + smartMeterId, String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/readings/read/" + smartMeter.getSmartMeterId(), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     public void shouldCalculateAllPrices() throws JsonProcessingException {
-        String smartMeterId = "bob";
-        populateMeterReadingsForMeter(smartMeterId);
+        SmartMeter smartMeter = new SmartMeter("bob");
+        populateMeterReadingsForMeter(smartMeter);
 
-        ResponseEntity<String> response = restTemplate.getForEntity("/price-plans/compare-all/" + smartMeterId, String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/price-plans/compare-all/" + smartMeter.getSmartMeterId(), String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     public void givenMeterIdAndLimitShouldReturnRecommendedCheapestPricePlans() throws JsonProcessingException {
-        String smartMeterId = "bob";
-        populateMeterReadingsForMeter(smartMeterId);
+        SmartMeter smartMeter = new SmartMeter("bob");
+        populateMeterReadingsForMeter(smartMeter);
 
         ResponseEntity<String> response =
-                restTemplate.getForEntity("/price-plans/recommend/" + smartMeterId + "?limit=2", String.class);
+                restTemplate.getForEntity("/price-plans/recommend/" + smartMeter.getSmartMeterId() + "?limit=2", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -71,8 +72,8 @@ public class EndpointTest {
         return (HttpEntity<String>) new HttpEntity(jsonMeterData, headers);
     }
 
-    private void populateMeterReadingsForMeter(String smartMeterId) throws JsonProcessingException {
-        MeterReadings readings = new MeterReadingsBuilder().setSmartMeterId(smartMeterId)
+    private void populateMeterReadingsForMeter(SmartMeter smartMeter) throws JsonProcessingException {
+        MeterReadings readings = new MeterReadingsBuilder().setSmartMeterId(smartMeter)
                 .generateElectricityReadings(20)
                 .build();
 

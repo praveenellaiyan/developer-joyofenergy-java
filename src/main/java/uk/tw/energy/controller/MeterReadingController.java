@@ -31,7 +31,7 @@ public class MeterReadingController {
         if (!meterReadings.isValid()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        meterReadingService.storeReadings(meterReadings.getSmartMeterId(), meterReadings.getElectricityReadings());
+        meterReadingService.storeReadings(meterReadings.getSmartMeter().getSmartMeterId(), meterReadings.getElectricityReadings());
         return ResponseEntity.ok().build();
     }
 

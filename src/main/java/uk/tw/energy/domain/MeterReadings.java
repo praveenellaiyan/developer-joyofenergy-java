@@ -1,17 +1,19 @@
 package uk.tw.energy.domain;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.Objects;
 
 public class MeterReadings {
 
     private List<ElectricityReading> electricityReadings;
-    private String smartMeterId;
+    private SmartMeter smartMeter;
 
-    public MeterReadings() { }
+    public MeterReadings() {
+    }
 
-    public MeterReadings(String smartMeterId, List<ElectricityReading> electricityReadings) {
-        this.smartMeterId = smartMeterId;
+    public MeterReadings(SmartMeter smartMeter, List<ElectricityReading> electricityReadings) {
+        this.smartMeter = Objects.requireNonNull(smartMeter);
         this.electricityReadings = electricityReadings;
     }
 
@@ -19,12 +21,13 @@ public class MeterReadings {
         return electricityReadings;
     }
 
-    public String getSmartMeterId() {
-        return smartMeterId;
+    public SmartMeter getSmartMeter() {
+        return smartMeter;
     }
 
+    @Transient
     public boolean isValid() {
-        return Objects.nonNull(smartMeterId)  && !smartMeterId.isEmpty()
+        return smartMeter.isValid()
                 && Objects.nonNull(electricityReadings) && !electricityReadings.isEmpty();
     }
 }
